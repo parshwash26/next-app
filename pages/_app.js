@@ -1,3 +1,4 @@
+// pages/_app.js
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { getDatabase } from "../utils/dbConnect";
@@ -20,7 +21,7 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     router.push("/");
-  }, []);
+  }, [router]);
 
   return <Component {...pageProps} />;
 }

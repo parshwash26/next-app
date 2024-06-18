@@ -1,3 +1,4 @@
+// pages/index.js
 import Link from "next/link";
 import styles from "../styles/HomePage.module.css";
 

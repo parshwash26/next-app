@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const Schema = mongoose.Schema;
+const { Schema } = mongoose;
 
 const customersupportSchema = new Schema({
   UserUID: {
@@ -73,7 +73,6 @@ const customersupportSchema = new Schema({
   },
 });
 
-// Exporting the model
 const customersupport = mongoose.model(
   "customersupports",
   customersupportSchema

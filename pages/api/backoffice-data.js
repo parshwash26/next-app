@@ -1,4 +1,3 @@
-// handler.js
 import dbConnect from "../../utils/dbConnect";
 import BackOfficeReportingView from "../../models/backoffice";
 import jwt from "jsonwebtoken";
@@ -21,14 +20,12 @@ export default async function handler(req, res) {
   try {
     jwt.verify(token, JWT_SECRET);
 
-    let backOfficeData = await BackOfficeReportingView.find({
+    const backOfficeData = await BackOfficeReportingView.find({
       UserUID: userUid,
     });
 
-    console.log({ backOfficeData });
     res.status(200).json(backOfficeData);
   } catch (error) {
-    console.error("Error fetching back office data:", error);
     res.status(500).json({ error: "Server error" });
   }
 }

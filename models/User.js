@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
-const Schema = mongoose.Schema;
-const uuid = require("uuid");
+import { v4 as uuidv4 } from "uuid";
+
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  userUid: { type: String, default: uuid.v4 },
+  userUid: { type: String, default: uuidv4 },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   passwordDigest: { type: String, required: true },

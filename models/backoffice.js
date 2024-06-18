@@ -55,7 +55,6 @@ const backOfficeReportingViewSchema = new Schema({
   MigrationUpdatedAt: Date,
 });
 
-// Exporting the model
 const BackOfficeReportingView = mongoose.model(
   "backofficereportingviews",
   backOfficeReportingViewSchema

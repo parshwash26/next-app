@@ -1,9 +1,8 @@
-// pages/api/login.js
-
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dbConnect from "../../utils/dbConnect";
 import User from "../../models/User";
+import { sendSlackNotification } from "../../utils/slack";
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -18,11 +17,13 @@ export default async function handler(req, res) {
 
   try {
     const user = await User.findOne({ email });
-    console.log({ user });
+
     if (!user) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
+
     const isMatch = await bcrypt.compare(password, user.passwordDigest);
+
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
@@ -32,6 +33,8 @@ export default async function handler(req, res) {
     });
 
     const { passwordDigest, ...userData } = user.toObject();
+
+    await sendSlackNotification(`User logged in: ${user.name} (${user.email})`);
 
     res.status(200).json({ token, user: userData });
   } catch (error) {
