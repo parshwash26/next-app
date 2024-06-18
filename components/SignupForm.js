@@ -1,5 +1,4 @@
 // components/SignupForm.js
-
 import { useState } from "react";
 import styles from "../styles/SignupForm.module.css";
 import axios from "axios";
@@ -32,37 +31,42 @@ export default function SignupForm() {
 
   return (
     <div className={styles.formContainer}>
+      <h2 className={styles.formTitle}>Signup</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label>Name</label>
+          <label htmlFor="name">Name</label>
           <input
             type="text"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label>Role</label>
+          <label htmlFor="role">Role</label>
           <select
+            id="role"
             value={role}
             onChange={(e) => setRole(e.target.value)}
             className={styles.select}

@@ -1,3 +1,4 @@
+// components/LoginForm.js
 import { useState } from "react";
 import styles from "../styles/LoginForm.module.css";
 import axios from "axios";
@@ -12,11 +13,38 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/login", { email, password });
-      const { token, userUid } = res.data;
+      const loginRes = await axios.post("/api/login", { email, password });
+      const { token, user } = loginRes.data;
+
       localStorage.setItem("token", token); // Store token in localStorage
-      localStorage.setItem("userUid", userUid); // Store userUid in localStorage
-      router.push("/customer-data"); // Redirect to customer data page
+      localStorage.setItem("user", JSON.stringify(user)); // Store user data in localStorage
+
+      let apiUrl;
+      if (user.role === "customer") {
+        apiUrl = "/api/customer-data";
+      } else if (user.role === "backoffice") {
+        apiUrl = "/api/backoffice-data";
+      } else {
+        throw new Error("Access restricted to customers only.");
+      }
+
+      const userDataRes = await axios.get(apiUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          userUid: user.userUid,
+        },
+      });
+
+      // Send customer data as a stringified JSON
+      router.push({
+        pathname:
+          user.role === "customer"
+            ? "/customerTableView"
+            : "/backofficeTableView.js",
+        query: { userDataRes: JSON.stringify(userDataRes.data) },
+      });
     } catch (error) {
       setMessage(error.response?.data?.error || "An error occurred");
     }
@@ -24,20 +52,23 @@ export default function LoginForm() {
 
   return (
     <div className={styles.formContainer}>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label>Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
         <div className={styles.formGroup}>
-          <label>Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -46,7 +77,7 @@ export default function LoginForm() {
         <button type="submit" className={styles.button}>
           Login
         </button>
-        {message && <p className={styles.message}>{message}</p>}
+        {message && <p className={styles.error}>{message}</p>}
       </form>
     </div>
   );

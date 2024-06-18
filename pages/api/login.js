@@ -21,7 +21,6 @@ export default async function handler(req, res) {
     if (!user) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
-
     const isMatch = await bcrypt.compare(password, user.passwordDigest);
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid email or password" });
@@ -31,7 +30,9 @@ export default async function handler(req, res) {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ token });
+    const { passwordDigest, ...userData } = user.toObject();
+
+    res.status(200).json({ token, user: userData });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Server error" });

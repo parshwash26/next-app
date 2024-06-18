@@ -20,13 +20,11 @@ export default async function handler(req, res) {
       name,
       email,
       role,
-      passwordDigest: hashedPassword, // Store hashed password
+      passwordDigest: hashedPassword,
     });
 
-    // Save user to database
     await newUser.save();
 
-    // Respond with success message or user data
     res
       .status(201)
       .json({ message: "User created successfully", user: newUser });
