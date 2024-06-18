@@ -57,7 +57,7 @@ const backOfficeReportingViewSchema = new Schema({
 
 // Exporting the model
 const BackOfficeReportingView = mongoose.model(
-  "BackOfficeReportingView",
+  "backofficereportingviews",
   backOfficeReportingViewSchema
 );
 

@@ -75,7 +75,7 @@ const customersupportSchema = new Schema({
 
 // Exporting the model
 const customersupport = mongoose.model(
-  "customersupport",
+  "customersupports",
   customersupportSchema
 );
 

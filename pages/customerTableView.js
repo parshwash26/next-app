@@ -1,85 +1,189 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  CircularProgress,
+  Typography,
+  Box,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import styles from "../styles/userDataResPage.module.css";
 
-export default function userDataResPage() {
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#3f51b5",
+    },
+    secondary: {
+      main: "#f50057",
+    },
+    background: {
+      default: "#f4f6f8",
+      paper: "#fff",
+    },
+    text: {
+      primary: "#333",
+      secondary: "#888",
+    },
+  },
+  typography: {
+    h6: {
+      fontSize: "1.1rem",
+      fontWeight: 600,
+    },
+  },
+});
+
+export default function UserDataResPage() {
   const router = useRouter();
   const { userDataRes } = router.query;
-  const [parseduserDataRes, setParseduserDataRes] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [parsedUserDataRes, setParsedUserDataRes] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (userDataRes) {
       try {
-        setParseduserDataRes(JSON.parse(userDataRes));
+        const parsedData = JSON.parse(userDataRes);
+        setParsedUserDataRes(parsedData);
       } catch (error) {
         setError("Error parsing customer data");
+      } finally {
+        setLoading(false);
       }
+    } else {
+      setLoading(false);
     }
   }, [userDataRes]);
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
-
-  if (loading) return <div className={styles.loadingMessage}>Loading...</div>;
-  if (error) return <div className={styles.errorMessage}>{error}</div>;
+  if (loading) return <LoadingIndicator />;
+  if (error) return <ErrorMessage error={error} />;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.tableContainer}>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>User UID</th>
-              <th>Email</th>
-              <th>Name</th>
-              <th>Wallet UID</th>
-              <th>Wallet Address</th>
-              <th>Wallet Type</th>
-              <th>Transaction Hash</th>
-              <th>Transaction To</th>
-              <th>Transaction From</th>
-              <th>Transaction Value</th>
-              <th>Transaction Status</th>
-              <th>Transaction Direction</th>
-              <th>Stream UID</th>
-              <th>Stream Description</th>
-              <th>Recovery Key Credential ID</th>
-              <th>Queue Job Tx Hash</th>
-              <th>Pending Transaction Hash</th>
-              <th>Name Address</th>
-              <th>Address</th>
-            </tr>
-          </thead>
-          <tbody>
-            {parseduserDataRes && (
-              <tr>
-                <td>{parseduserDataRes.UserUID}</td>
-                <td>{parseduserDataRes.UserEmail}</td>
-                <td>{parseduserDataRes.UserName}</td>
-                <td>{parseduserDataRes.WalletUID}</td>
-                <td>{parseduserDataRes.WalletAddress}</td>
-                <td>{parseduserDataRes.WalletType}</td>
-                <td>{parseduserDataRes.TransactionHash}</td>
-                <td>{parseduserDataRes.TransactionTo}</td>
-                <td>{parseduserDataRes.TransactionFrom}</td>
-                <td>{parseduserDataRes.TransactionValue}</td>
-                <td>{parseduserDataRes.TransactionStatus}</td>
-                <td>{parseduserDataRes.TransactionDirection}</td>
-                <td>{parseduserDataRes.StreamUID}</td>
-                <td>{parseduserDataRes.StreamDescription}</td>
-                <td>{parseduserDataRes.RecoveryKeyCredentialID}</td>
-                <td>{parseduserDataRes.QueueJobTxHash}</td>
-                <td>{parseduserDataRes.PendingTransactionHash}</td>
-                <td>{parseduserDataRes.NameAddressName}</td>
-                <td>{parseduserDataRes.NameAddressAddress}</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+    <ThemeProvider theme={theme}>
+      <Box
+        className={styles.pageContainer}
+        sx={{ padding: 3, backgroundColor: theme.palette.background.default }}
+      >
+        <Typography variant="h4" color="primary" gutterBottom>
+          User Data Response
+        </Typography>
+        <TableContainer component={Paper} className={styles.tableContainer}>
+          <Table>
+            <TableHead sx={{ backgroundColor: theme.palette.primary.main }}>
+              <TableRow>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  User UID
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Name
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Wallet UID
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Wallet Address
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Wallet Type
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction Hash
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction To
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction From
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction Value
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction Status
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Transaction Direction
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Stream UID
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Stream Description
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Recovery Key Credential ID
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Queue Job Tx Hash
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Pending Transaction Hash
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Name Address
+                </TableCell>
+                <TableCell sx={{ color: "white", whiteSpace: "nowrap" }}>
+                  Address
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {parsedUserDataRes.map((userData, index) => (
+                <TableRow
+                  key={index}
+                  sx={{
+                    "&:nth-of-type(odd)": {
+                      backgroundColor: theme.palette.action.hover,
+                    },
+                  }}
+                >
+                  <TableCell>{userData.UserUID}</TableCell>
+                  <TableCell>{userData.UserEmail}</TableCell>
+                  <TableCell>{userData.UserName}</TableCell>
+                  <TableCell>{userData.WalletUID}</TableCell>
+                  <TableCell>{userData.WalletAddress}</TableCell>
+                  <TableCell>{userData.WalletType}</TableCell>
+                  <TableCell>{userData.TransactionHash}</TableCell>
+                  <TableCell>{userData.TransactionTo}</TableCell>
+                  <TableCell>{userData.TransactionFrom}</TableCell>
+                  <TableCell>{userData.TransactionValue}</TableCell>
+                  <TableCell>{userData.TransactionStatus}</TableCell>
+                  <TableCell>{userData.TransactionDirection}</TableCell>
+                  <TableCell>{userData.StreamUID}</TableCell>
+                  <TableCell>{userData.StreamDescription}</TableCell>
+                  <TableCell>{userData.RecoveryKeyCredentialID}</TableCell>
+                  <TableCell>{userData.QueueJobTxHash}</TableCell>
+                  <TableCell>{userData.PendingTransactionHash}</TableCell>
+                  <TableCell>{userData.NameAddressName}</TableCell>
+                  <TableCell>{userData.NameAddressAddress}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </ThemeProvider>
+  );
+}
+
+function LoadingIndicator() {
+  return (
+    <div className={styles.loadingMessage}>
+      <CircularProgress />
     </div>
   );
+}
+
+function ErrorMessage({ error }) {
+  return <Typography className={styles.errorMessage}>{error}</Typography>;
 }

@@ -1,4 +1,3 @@
-// dbConnect.js
 import mongoose from "mongoose";
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -24,18 +23,16 @@ async function dbConnect() {
     const options = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
+      serverSelectionTimeoutMS: 5000,
     };
 
     cached.promise = mongoose
       .connect(MONGODB_URI, options)
       .then((mongoose) => {
-        console.log("MongoDB connected successfully");
         return mongoose.connection.db;
       })
       .catch((err) => {
-        console.error("MongoDB connection error:", err);
-        cached.promise = null; // Reset promise if connection fails
+        cached.promise = null;
         throw err;
       });
   }
