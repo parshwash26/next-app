@@ -18,12 +18,11 @@ export default async function handler(req, res) {
   const token = authorization.split(" ")[1];
   try {
     jwt.verify(token, JWT_SECRET);
-    console.log({ userUid });
-    let customerData = await customersupport.find({ UserUID: userUid });
-    console.log({ customerData });
+
+    const customerData = await customersupport.find({ UserUID: userUid });
+
     res.status(200).json(customerData);
   } catch (error) {
-    console.error("Error fetching customer data:", error);
     res.status(500).json({ error: "Server error" });
   }
 }

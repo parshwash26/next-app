@@ -40,6 +40,34 @@ const theme = createTheme({
   },
 });
 
+const LoadingIndicator = () => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+    }}
+  >
+    <CircularProgress />
+  </Box>
+);
+
+const ErrorMessage = ({ error }) => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      minHeight: "100vh",
+    }}
+  >
+    <Typography variant="h6" color="error">
+      {error}
+    </Typography>
+  </Box>
+);
+
 export default function UserDataResPage() {
   const router = useRouter();
   const { userDataRes } = router.query;
@@ -72,7 +100,7 @@ export default function UserDataResPage() {
         sx={{ padding: 3, backgroundColor: theme.palette.background.default }}
       >
         <Typography variant="h4" color="primary" gutterBottom>
-          User Data Response
+          Backoffice Data
         </Typography>
         <TableContainer component={Paper} className={styles.tableContainer}>
           <Table className={styles.table}>

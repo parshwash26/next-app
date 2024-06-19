@@ -1,4 +1,3 @@
-// components/LoginForm.js
 import { useState } from "react";
 import styles from "../styles/LoginForm.module.css";
 import axios from "axios";
@@ -16,8 +15,8 @@ export default function LoginForm() {
       const loginRes = await axios.post("/api/login", { email, password });
       const { token, user } = loginRes.data;
 
-      localStorage.setItem("token", token); // Store token in localStorage
-      localStorage.setItem("user", JSON.stringify(user)); // Store user data in localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       let apiUrl;
       if (user.role === "customer") {
@@ -25,7 +24,7 @@ export default function LoginForm() {
       } else if (user.role === "backoffice") {
         apiUrl = "/api/backoffice-data";
       } else {
-        throw new Error("Access restricted to customers only.");
+        throw new Error("Access restricted to customers and backoffice only.");
       }
 
       const userDataRes = await axios.get(apiUrl, {
@@ -37,16 +36,17 @@ export default function LoginForm() {
         },
       });
 
-      // Send customer data as a stringified JSON
       router.push({
         pathname:
           user.role === "customer"
             ? "/customerTableView"
-            : "/backofficeTableView.js",
+            : "/backofficeTableView",
         query: { userDataRes: JSON.stringify(userDataRes.data) },
       });
     } catch (error) {
-      setMessage(error.response?.data?.error || "An error occurred");
+      setMessage(
+        error.response?.data?.error || "An error occurred during login"
+      );
     }
   };
 

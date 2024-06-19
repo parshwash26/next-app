@@ -1,6 +1,7 @@
 import dbConnect from "../../utils/dbConnect";
 import User from "../../models/User";
 import bcrypt from "bcryptjs";
+import { sendSlackNotification } from "../../utils/slack";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -12,10 +13,8 @@ export default async function handler(req, res) {
   try {
     await dbConnect();
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create new user instance
     const newUser = new User({
       name,
       email,
@@ -24,6 +23,8 @@ export default async function handler(req, res) {
     });
 
     await newUser.save();
+
+    await sendSlackNotification(`New user signed up: ${name} (${email})`);
 
     res
       .status(201)

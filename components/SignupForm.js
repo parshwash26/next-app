@@ -1,4 +1,3 @@
-// components/SignupForm.js
 import { useState } from "react";
 import styles from "../styles/SignupForm.module.css";
 import axios from "axios";
@@ -7,7 +6,7 @@ export default function SignupForm() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer"); // Default role is customer
+  const [role, setRole] = useState("customer");
   const [message, setMessage] = useState("");
 
   const handleSubmit = async (e) => {
@@ -23,7 +22,7 @@ export default function SignupForm() {
       setEmail("");
       setName("");
       setPassword("");
-      setRole("customer"); // Reset role to default after successful signup
+      setRole("customer");
     } catch (error) {
       setMessage(error.response.data.error);
     }

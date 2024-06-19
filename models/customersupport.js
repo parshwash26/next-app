@@ -73,10 +73,9 @@ const customersupportSchema = new Schema({
   },
 });
 
-// Exporting the model
-const customersupport = mongoose.model(
-  "customersupports",
-  customersupportSchema
-);
+// Ensure model is not overwritten
+const customersupport =
+  mongoose.models.customersupports ||
+  mongoose.model("customersupports", customersupportSchema);
 
 export default customersupport;

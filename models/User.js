@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-const uuid = require("uuid");
+import { v4 as uuidv4 } from "uuid";
 
 const userSchema = new Schema({
-  userUid: { type: String, default: uuid.v4 },
+  userUid: { type: String, default: uuidv4 },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   passwordDigest: { type: String, required: true },
@@ -16,6 +16,6 @@ const userSchema = new Schema({
   dfnsId: { type: String },
 });
 
-const User = mongoose.models.User || mongoose.model("users", userSchema);
+const User = mongoose.models.users || mongoose.model("users", userSchema);
 
 export default User;
