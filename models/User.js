@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 import { v4 as uuidv4 } from "uuid";
-
-const { Schema } = mongoose;
 
 const userSchema = new Schema({
   userUid: { type: String, default: uuidv4 },
@@ -17,6 +16,6 @@ const userSchema = new Schema({
   dfnsId: { type: String },
 });
 
-const User = mongoose.models.User || mongoose.model("users", userSchema);
+const User = mongoose.models.users || mongoose.model("users", userSchema);
 
 export default User;

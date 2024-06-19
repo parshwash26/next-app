@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
-
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const backOfficeReportingViewSchema = new Schema({
   WalletUID: String,
@@ -55,9 +54,8 @@ const backOfficeReportingViewSchema = new Schema({
   MigrationUpdatedAt: Date,
 });
 
-const BackOfficeReportingView = mongoose.model(
-  "backofficereportingviews",
-  backOfficeReportingViewSchema
-);
+const BackOfficeReportingView =
+  mongoose.models.backofficereportingviews ||
+  mongoose.model("backofficereportingviews", backOfficeReportingViewSchema);
 
 export default BackOfficeReportingView;

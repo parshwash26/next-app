@@ -72,7 +72,7 @@ export default function UserDataResPage() {
         sx={{ padding: 3, backgroundColor: theme.palette.background.default }}
       >
         <Typography variant="h4" color="primary" gutterBottom>
-          User Data Response
+          Customer Data
         </Typography>
         <TableContainer component={Paper} className={styles.tableContainer}>
           <Table>

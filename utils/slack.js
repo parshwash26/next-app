@@ -10,8 +10,18 @@ if (!SLACK_WEBHOOK_URL) {
 
 export const sendSlackNotification = async (message) => {
   try {
-    await axios.post(SLACK_WEBHOOK_URL, { text: message });
+    console.log("Preparing to send Slack notification with message:", message);
+
+    const response = await axios.post(SLACK_WEBHOOK_URL, { text: message });
+
+    console.log(
+      "Slack notification sent successfully. Response data:",
+      response.data
+    );
   } catch (error) {
-    console.error("Error sending Slack notification:", error);
+    console.error(
+      "Error sending Slack notification:",
+      error.response ? error.response.data : error.message
+    );
   }
 };

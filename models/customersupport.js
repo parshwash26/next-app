@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema } = mongoose;
+const Schema = mongoose.Schema;
 
 const customersupportSchema = new Schema({
   UserUID: {
@@ -73,9 +73,9 @@ const customersupportSchema = new Schema({
   },
 });
 
-const customersupport = mongoose.model(
-  "customersupports",
-  customersupportSchema
-);
+// Ensure model is not overwritten
+const customersupport =
+  mongoose.models.customersupports ||
+  mongoose.model("customersupports", customersupportSchema);
 
 export default customersupport;
